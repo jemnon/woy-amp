@@ -1,6 +1,6 @@
 import ContentfulApi from '../../utils/ContentfulApi';
 
-export const config = { amp: true };
+// export const config = { amp: true };
 
 export default function AmpIndex(props: any) {
   console.log('props: ', props);

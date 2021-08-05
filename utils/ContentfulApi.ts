@@ -37,6 +37,6 @@ export default class ContentfulApi {
       }
     }`;
     const response = await this.callContentful(query);
-    return response?.data?.postCollection;
+    return response?.data?.postCollection.items;
   }
 }
