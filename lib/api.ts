@@ -21,11 +21,17 @@ export const fetchGraphQL = async (query: string): Promise<any> => {
 };
 
 const POST_GRAPHQL_FIELDS = `
+  bodyPreview
   slug
   title
   publishDate
   enableAmp
-  webStoryCollection {
+  totalTime
+  servings
+  ingredients
+  optionalIngredients
+  instructions
+  webStoryCollection(limit: 1) {
     items {
       coverPageTitle
       coverPageAsset {
@@ -35,6 +41,15 @@ const POST_GRAPHQL_FIELDS = `
       lastPageDescription
       lastPageAsset {
         url
+      }
+      storyPagesCollection(limit: 30) {
+        items {
+          title
+          description
+          asset {
+            url
+          }
+        }
       }
     }
   }
