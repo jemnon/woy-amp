@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import ErrorPage from 'next/error';
+// import { useRouter } from 'next/router';
+// import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
@@ -17,10 +17,10 @@ interface PostProps {
 const ctaLabel = 'Get Recipe';
 
 export default function Post(props: any) {
-  const router = useRouter();
+  /* const router = useRouter();
   if (!router.isFallback && !props?.slug) {
     return <ErrorPage statusCode={404} />;
-  }
+  } */
   return (
     <Layout>
       <Head>
@@ -200,19 +200,19 @@ export default function Post(props: any) {
   );
 }
 
+export async function getStaticPaths(): Promise<any> {
+  const data = await getPosts();
+  return {
+    paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
+    fallback: false,
+  };
+}
+
 export async function getStaticProps({ params }: any): Promise<any> {
   const [data] = await getPostBySlug(params?.slug);
   return {
     props: {
       ...data,
     },
-  };
-}
-
-export async function getStaticPaths(): Promise<any> {
-  const data = await getPosts();
-  return {
-    paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
-    fallback: true,
   };
 }
