@@ -18,7 +18,7 @@ const ctaLabel = 'Get Recipe';
 
 export default function Post(props: any) {
   const router = useRouter();
-  if (!router.isFallback) {
+  if (router.isFallback) {
     return <div>Loading...</div>;
   }
   return (
@@ -204,7 +204,7 @@ export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
     paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
-    fallback: 'blocking',
+    fallback: true,
   };
 }
 
