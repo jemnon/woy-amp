@@ -5,14 +5,7 @@ import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
 
-export const config = { amp: true };
-
-interface PostProps {
-  coverPageTitle?: string;
-  publishDate?: string;
-  slug?: string;
-  title?: string;
-}
+// export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
 
@@ -23,7 +16,8 @@ export default function Post(props: any) {
   }
   return (
     <Layout>
-      <Head>
+      {JSON.stringify(props)}
+      {/* <Head>
         <script
           async
           key="amp-story"
@@ -36,12 +30,6 @@ export default function Post(props: any) {
           custom-element="amp-video"
           src="https://cdn.ampproject.org/v0/amp-video-0.1.js"
         />
-        {/* <script
-          async
-          key="amp-analytics"
-          custom-element="amp-analytics"
-          src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
-        /> */}
       </Head>
       <amp-story
         standalone=""
@@ -140,8 +128,8 @@ export default function Post(props: any) {
             href={`https://www.whisperofyum.com/post/${props?.slug}`}
           />
         </amp-story-page>
-      </amp-story>
-      <style jsx>{`
+      </amp-story> */}
+      {/* <style jsx>{`
         amp-story {
           color: #fff;
         }
@@ -195,7 +183,7 @@ export default function Post(props: any) {
           font-size: 1.5rem;
           margin-bottom: 0;
         }
-      `}</style>
+      `}</style>*/}
     </Layout>
   );
 }
