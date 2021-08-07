@@ -212,6 +212,15 @@ export async function getStaticProps({ params }: any): Promise<any> {
   };
 }
 
+export async function getInitialProps({ params }: any): Promise<any> {
+  const [data] = await getPostBySlug(params?.slug);
+  return {
+    props: {
+      ...data,
+    },
+  };
+}
+
 export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
