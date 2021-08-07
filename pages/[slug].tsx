@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
+import { useAmp } from 'next/amp';
 import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
 
-export const config = { amp: true };
+export const config = { amp: 'hybrid' };
 
 interface PostProps {
   coverPageTitle?: string;
@@ -18,9 +19,11 @@ const ctaLabel = 'Get Recipe';
 
 export default function Post(props: any) {
   const router = useRouter();
+  const isAmp = useAmp();
   if (!router.isFallback && !props?.slug) {
     return <ErrorPage statusCode={404} />;
   }
+  if (!isAmp) return null;
   return (
     <Layout>
       <Head>
