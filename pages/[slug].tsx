@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
-// import Markdown from 'react-markdown';
+import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
 
@@ -94,9 +94,9 @@ export default function Post(props: any) {
               <amp-story-grid-layer template="thirds">
                 <div grid-area="upper-third">
                   <div className="box">
-                    {/* <Markdown className="markdown">
-                          {page?.description}
-              </Markdown> */}
+                    <Markdown className="markdown">
+                      {page?.description}
+                    </Markdown>
                   </div>
                 </div>
               </amp-story-grid-layer>
@@ -126,12 +126,9 @@ export default function Post(props: any) {
                   <h3 className="title">whisperofyum.com</h3>
                 </div>
                 <h4 className="headline">
-                  {/* <Markdown>
-                        {
-                          props?.webStoryCollection?.items[0]
-                            ?.lastPageDescription
-                        }
-                      </Markdown> */}
+                  <Markdown>
+                    {props?.webStoryCollection?.items[0]?.lastPageDescription}
+                  </Markdown>
                 </h4>
               </div>
             </div>
