@@ -201,6 +201,7 @@ export async function getStaticProps({ params }: any): Promise<any> {
     props: {
       ...data,
     },
+    revalidate: 1,
   };
 }
 
