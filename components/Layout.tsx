@@ -28,6 +28,8 @@ export default function Layout({ children }: LayoutProps) {
             Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
             Helvetica Neue, sans-serif;
           font-weight: 900;
+          line-height: 1.25;
+          margin-bottom: 0.35em;
         }
         p {
           font-weight: normal;

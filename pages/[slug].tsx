@@ -1,6 +1,10 @@
+import { useRouter } from 'next/router';
+import ErrorPage from 'next/error';
 import Head from 'next/head';
+import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
+// import markdownToHtml from '../lib/markdownToHtml';
 
 export const config = { amp: true };
 
@@ -11,8 +15,18 @@ interface PostProps {
   title?: string;
 }
 
+const ctaLabel = 'Get Recipe';
+
+/* const getMarkdownContent = async (content: any) => {
+  const mdHtml = await markdownToHtml(content);
+  return mdHtml;
+}; */
+
 const Post = (props: any) => {
-  console.log('props: ', props);
+  const router = useRouter();
+  if (!router.isFallback && !props?.slug) {
+    return <ErrorPage statusCode={404} />;
+  }
   return (
     <Layout>
       <Head>
@@ -33,18 +47,19 @@ const Post = (props: any) => {
           key="amp-analytics"
           custom-element="amp-analytics"
           src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
-        />
+        /> */}
         <script
           async
           key="amp-smartlinks"
           custom-element="amp-smartlinks"
           src="https://cdn.ampproject.org/v0/amp-smartlinks-0.1.js"
-        /> */}
+        />
       </Head>
       <amp-story
         standalone
         title={props.title}
         publisher="Whipser of Yum"
+        publisher-logo-src=""
         poster-portrait-src={
           props.webStoryCollection.items[0].coverPageAsset.url
         }
@@ -59,18 +74,128 @@ const Post = (props: any) => {
               layout="responsive"
             />
           </amp-story-grid-layer>
-          <amp-story-grid-layer class="darken-cover" template="thirds">
+          <amp-story-grid-layer className="darken-cover" template="thirds">
             <div grid-area="middle-third">
-              <h1>{props.webStoryCollection.items[0].coverPageTitle}</h1>
+              <div>
+                <div className="site-box">
+                  <h1 className="title">whisperofyum.com</h1>
+                </div>
+                <h2 className="headline">
+                  {props.webStoryCollection.items[0].coverPageTitle}
+                </h2>
+              </div>
             </div>
           </amp-story-grid-layer>
+          <amp-story-page-attachment
+            class="cta"
+            layout="nodisplay"
+            cta-text={ctaLabel}
+            href={`https://www.whisperofyum.com/post/${props.slug}`}
+          />
         </amp-story-page>
-        <amp-story-page id="page-1">
-          <amp-story-grid-layer template="thirds">
-            <div grid-area="upper-third">page 1 text</div>
+        {props.webStoryCollection.items[0].storyPagesCollection.items.map(
+          (page: any, key: number) => (
+            <amp-story-page id={`page${key + 1}`} key={`page-${key}`}>
+              <amp-story-grid-layer template="fill">
+                <amp-img
+                  alt=""
+                  src={page.asset.url}
+                  width="720"
+                  height="1280"
+                  layout="responsive"
+                />
+              </amp-story-grid-layer>
+              <amp-story-grid-layer template="thirds">
+                <div grid-area="upper-third">
+                  <div className="box">
+                    {/* getMarkdownContent(page.description) */}
+                    <Markdown>{page.description}</Markdown>
+                  </div>
+                </div>
+              </amp-story-grid-layer>
+              <amp-story-page-attachment
+                class="cta"
+                layout="nodisplay"
+                cta-text={ctaLabel}
+                href={`https://www.whisperofyum.com/post/${props.slug}`}
+              />
+            </amp-story-page>
+          ),
+        )}
+        <amp-story-page id="last-page">
+          <amp-story-grid-layer template="fill">
+            <amp-img
+              alt=""
+              src={props.webStoryCollection.items[0].lastPageAsset.url}
+              width="720"
+              height="1280"
+              layout="responsive"
+            />
           </amp-story-grid-layer>
+          <amp-story-grid-layer class="darken-last" template="thirds">
+            <div grid-area="middle-third">
+              <div>
+                <div className="site-box">
+                  <h1 className="title">whisperofyum.com</h1>
+                </div>
+              </div>
+            </div>
+          </amp-story-grid-layer>
+          <amp-story-page-attachment
+            class="cta"
+            layout="nodisplay"
+            cta-text={ctaLabel}
+            href={`https://www.whisperofyum.com/post/${props.slug}`}
+          />
         </amp-story-page>
       </amp-story>
+      <style jsx>{`
+        amp-story {
+          color: #fff;
+        }
+        .box h6 {
+          font-size: 24px !important;
+        }
+        .darken-cover,
+        .darken-last {
+          background-color: rgba(0, 0, 0, 0.26);
+        }
+        .box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 0.75rem;
+          width: 100%;
+          height: auto;
+          background-color: rgba(17, 17, 17, 0.75);
+        }
+        .site-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          font-size: 1.5rem;
+          text-align: center;
+          color: #fff;
+
+          padding: 0.5rem;
+          margin-bottom: 0.75rem;
+
+          width: 100%;
+          height: 100%;
+
+          background-color: #bb5b34;
+        }
+        .site-box .title {
+          font-size: 1.5rem;
+          margin-bottom: 0;
+        }
+        .headline {
+          text-align: center;
+          font-size: 1.875rem;
+        }
+      `}</style>
     </Layout>
   );
 };
