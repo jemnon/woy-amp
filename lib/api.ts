@@ -64,10 +64,10 @@ export const getPosts = async (): Promise<any> => {
     }
   }`;
   const response = await fetchGraphQL(query);
-  return response?.data?.postCollection.items;
+  return response?.data?.postCollection?.items;
 };
 
-export const getPostBySlug = async (slug: string): Promise<any> => {
+export const getPostBySlug = async (slug?: string): Promise<any> => {
   const query = `{
     postCollection(where: { slug: "${slug}" }, limit: 1) {
       items {
@@ -76,5 +76,5 @@ export const getPostBySlug = async (slug: string): Promise<any> => {
     }
   }`;
   const response = await fetchGraphQL(query);
-  return response?.data?.postCollection.items;
+  return response?.data?.postCollection?.items;
 };

@@ -4,7 +4,7 @@ const Index = (): JSX.Element => <></>;
 
 export default Index;
 
-interface StaticProps {
+/* interface StaticProps {
   redirect: {
     destination: string;
     permanent: boolean;
@@ -13,11 +13,11 @@ interface StaticProps {
 
 export const getStaticProps = async (): Promise<StaticProps> => {
   const data = await getPosts();
-  const slug = data[0].slug;
+  const slug = data[0]?.slug;
   return {
     redirect: {
       destination: `/${slug}`,
       permanent: false,
     },
   };
-};
+}; */

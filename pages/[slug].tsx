@@ -42,27 +42,21 @@ const Post = (props: any) => {
           custom-element="amp-analytics"
           src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
         /> */}
-        <script
-          async
-          key="amp-smartlinks"
-          custom-element="amp-smartlinks"
-          src="https://cdn.ampproject.org/v0/amp-smartlinks-0.1.js"
-        />
       </Head>
       <amp-story
-        standalone
+        standalone=""
         title={props.title}
         publisher="Whipser of Yum"
-        publisher-logo-src=""
+        publisher-logo-src="/logo-white.png"
         poster-portrait-src={
-          props.webStoryCollection.items[0].coverPageAsset.url
+          props?.webStoryCollection?.items[0]?.coverPageAsset?.url
         }
       >
         <amp-story-page id="cover">
           <amp-story-grid-layer template="fill">
             <amp-img
               alt=""
-              src={props.webStoryCollection.items[0].coverPageAsset.url}
+              src={props?.webStoryCollection?.items[0]?.coverPageAsset?.url}
               width="720"
               height="1280"
               layout="responsive"
@@ -75,7 +69,7 @@ const Post = (props: any) => {
                   <h1 className="title">whisperofyum.com</h1>
                 </div>
                 <h2 className="headline">
-                  {props.webStoryCollection.items[0].coverPageTitle}
+                  {props?.webStoryCollection?.items[0]?.coverPageTitle}
                 </h2>
               </div>
             </div>
@@ -84,10 +78,10 @@ const Post = (props: any) => {
             class="cta"
             layout="nodisplay"
             cta-text={ctaLabel}
-            href={`https://www.whisperofyum.com/post/${props.slug}`}
+            href={`https://www.whisperofyum.com/post/${props?.slug}`}
           />
         </amp-story-page>
-        {props.webStoryCollection.items[0].storyPagesCollection.items.map(
+        {props?.webStoryCollection?.items[0]?.storyPagesCollection?.items?.map(
           (page: any, key: number) => (
             <amp-story-page id={`page${key + 1}`} key={`page-${key}`}>
               <amp-story-grid-layer template="fill">
@@ -102,7 +96,9 @@ const Post = (props: any) => {
               <amp-story-grid-layer template="thirds">
                 <div grid-area="upper-third">
                   <div className="box">
-                    <Markdown className="markdown">{page.description}</Markdown>
+                    <Markdown className="markdown">
+                      {page?.description}
+                    </Markdown>
                   </div>
                 </div>
               </amp-story-grid-layer>
@@ -110,7 +106,7 @@ const Post = (props: any) => {
                 class="cta"
                 layout="nodisplay"
                 cta-text={ctaLabel}
-                href={`https://www.whisperofyum.com/post/${props.slug}`}
+                href={`https://www.whisperofyum.com/post/${props?.slug}`}
               />
             </amp-story-page>
           ),
@@ -119,7 +115,7 @@ const Post = (props: any) => {
           <amp-story-grid-layer template="fill">
             <amp-img
               alt=""
-              src={props.webStoryCollection.items[0].lastPageAsset.url}
+              src={props?.webStoryCollection?.items[0]?.lastPageAsset?.url}
               width="720"
               height="1280"
               layout="responsive"
@@ -133,7 +129,7 @@ const Post = (props: any) => {
                 </div>
                 <h4 className="headline">
                   <Markdown>
-                    {props.webStoryCollection.items[0].lastPageDescription}
+                    {props?.webStoryCollection?.items[0]?.lastPageDescription}
                   </Markdown>
                 </h4>
               </div>
@@ -143,7 +139,7 @@ const Post = (props: any) => {
             class="cta"
             layout="nodisplay"
             cta-text={ctaLabel}
-            href={`https://www.whisperofyum.com/post/${props.slug}`}
+            href={`https://www.whisperofyum.com/post/${props?.slug}`}
           />
         </amp-story-page>
       </amp-story>
@@ -209,8 +205,7 @@ const Post = (props: any) => {
 export default Post;
 
 export const getStaticProps = async ({ params }: any): Promise<any> => {
-  const [data] = await getPostBySlug(params.slug);
-
+  const [data] = await getPostBySlug(params?.slug);
   return {
     props: {
       ...data,
