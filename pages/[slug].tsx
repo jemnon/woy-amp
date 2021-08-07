@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 // import ErrorPage from 'next/error';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
@@ -191,7 +192,7 @@ export default function Post(props: any) {
 export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
-    paths: data.map(({ slug }: any) => `/${slug}`),
+    paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
     fallback: true,
   };
 }
