@@ -45,18 +45,16 @@ const Post = (props: any) => {
       </Head>
       <amp-story
         standalone=""
-        title={props.title}
+        title={`${props.title}`}
         publisher="Whipser of Yum"
         publisher-logo-src="/logo-white.png"
-        poster-portrait-src={
-          props?.webStoryCollection?.items[0]?.coverPageAsset?.url
-        }
+        poster-portrait-src={`${props?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
       >
         <amp-story-page id="cover">
           <amp-story-grid-layer template="fill">
             <amp-img
               alt=""
-              src={props?.webStoryCollection?.items[0]?.coverPageAsset?.url}
+              src={`${props?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
               width="720"
               height="1280"
               layout="responsive"
@@ -87,7 +85,7 @@ const Post = (props: any) => {
               <amp-story-grid-layer template="fill">
                 <amp-img
                   alt=""
-                  src={page.asset.url}
+                  src={`${page.asset.url}`}
                   width="720"
                   height="1280"
                   layout="responsive"
@@ -115,7 +113,7 @@ const Post = (props: any) => {
           <amp-story-grid-layer template="fill">
             <amp-img
               alt=""
-              src={props?.webStoryCollection?.items[0]?.lastPageAsset?.url}
+              src={`${props?.webStoryCollection?.items[0]?.lastPageAsset?.url}`}
               width="720"
               height="1280"
               layout="responsive"
