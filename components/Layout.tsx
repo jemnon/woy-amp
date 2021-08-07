@@ -31,6 +31,36 @@ export default function Layout({ children }: LayoutProps) {
           line-height: 1.25;
           margin-bottom: 0.35em;
         }
+        h1 {
+          font-size: 2.25rem;
+        }
+        h2 {
+          font-size: 2rem;
+        }
+        h3 {
+          font-size: 1.875rem;
+        }
+        h4 {
+          font-size: 1.75rem;
+        }
+        h5 {
+          font-size: 1.625rem;
+        }
+        h6 {
+          font-size: 1.5rem;
+        }
+        .headline p {
+          font-weight: 900;
+          font-size: 1.875rem;
+        }
+        .markdown,
+        .markdown p {
+          text-align: center;
+        }
+        .markdown ul {
+          padding-left: 0;
+          list-style: none;
+        }
         p {
           font-weight: normal;
           line-height: 1.5;

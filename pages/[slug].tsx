@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
-// import markdownToHtml from '../lib/markdownToHtml';
 
 export const config = { amp: true };
 
@@ -16,11 +15,6 @@ interface PostProps {
 }
 
 const ctaLabel = 'Get Recipe';
-
-/* const getMarkdownContent = async (content: any) => {
-  const mdHtml = await markdownToHtml(content);
-  return mdHtml;
-}; */
 
 const Post = (props: any) => {
   const router = useRouter();
@@ -74,8 +68,8 @@ const Post = (props: any) => {
               layout="responsive"
             />
           </amp-story-grid-layer>
-          <amp-story-grid-layer className="darken-cover" template="thirds">
-            <div grid-area="middle-third">
+          <amp-story-grid-layer className="darken" template="thirds">
+            <div className="justify-center" grid-area="middle-third">
               <div>
                 <div className="site-box">
                   <h1 className="title">whisperofyum.com</h1>
@@ -108,8 +102,7 @@ const Post = (props: any) => {
               <amp-story-grid-layer template="thirds">
                 <div grid-area="upper-third">
                   <div className="box">
-                    {/* getMarkdownContent(page.description) */}
-                    <Markdown>{page.description}</Markdown>
+                    <Markdown className="markdown">{page.description}</Markdown>
                   </div>
                 </div>
               </amp-story-grid-layer>
@@ -132,12 +125,17 @@ const Post = (props: any) => {
               layout="responsive"
             />
           </amp-story-grid-layer>
-          <amp-story-grid-layer class="darken-last" template="thirds">
-            <div grid-area="middle-third">
+          <amp-story-grid-layer className="darken" template="thirds">
+            <div className="justify-center" grid-area="middle-third">
               <div>
                 <div className="site-box">
-                  <h1 className="title">whisperofyum.com</h1>
+                  <h3 className="title">whisperofyum.com</h3>
                 </div>
+                <h4 className="headline">
+                  <Markdown>
+                    {props.webStoryCollection.items[0].lastPageDescription}
+                  </Markdown>
+                </h4>
               </div>
             </div>
           </amp-story-grid-layer>
@@ -153,11 +151,21 @@ const Post = (props: any) => {
         amp-story {
           color: #fff;
         }
-        .box h6 {
-          font-size: 24px !important;
+        .justify-center {
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        .darken-cover,
-        .darken-last {
+        .headline,
+        .headline p {
+          text-align: center;
+        }
+        .headline {
+          font-size: 1.875rem;
+          font-weight: 900;
+          margin-bottom: 0;
+        }
+        .darken {
           background-color: rgba(0, 0, 0, 0.26);
         }
         .box {
@@ -180,6 +188,8 @@ const Post = (props: any) => {
           color: #fff;
 
           padding: 0.5rem;
+          padding-top: 0.25rem;
+          paddinb-bottom: 0.25rem;
           margin-bottom: 0.75rem;
 
           width: 100%;
@@ -190,10 +200,6 @@ const Post = (props: any) => {
         .site-box .title {
           font-size: 1.5rem;
           margin-bottom: 0;
-        }
-        .headline {
-          text-align: center;
-          font-size: 1.875rem;
         }
       `}</style>
     </Layout>
