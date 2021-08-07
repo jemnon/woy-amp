@@ -203,3 +203,12 @@ export async function getStaticProps({ params }: any): Promise<any> {
     },
   };
 }
+
+export async function getServerSideProp({ params }: any): Promise<any> {
+  const [data] = await getPostBySlug(params?.slug);
+  return {
+    props: {
+      ...data,
+    },
+  };
+}
