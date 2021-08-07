@@ -10,10 +10,10 @@ export const config = { amp: true };
 const ctaLabel = 'Get Recipe';
 
 export default function Post(props: any) {
-  /* const router = useRouter();
+  const router = useRouter();
   if (router.isFallback) {
     return <div>Loading...</div>;
-  } */
+  }
   return (
     <Layout>
       <Head>
@@ -23,12 +23,12 @@ export default function Post(props: any) {
           custom-element="amp-story"
           src="https://cdn.ampproject.org/v0/amp-story-1.0.js"
         />
-        {/* <script
+        <script
           async
           key="amp-video"
           custom-element="amp-video"
           src="https://cdn.ampproject.org/v0/amp-video-0.1.js"
-        /> */}
+        />
       </Head>
       <amp-story
         standalone=""
