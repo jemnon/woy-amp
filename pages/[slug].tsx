@@ -10,10 +10,10 @@ export const config = { amp: true };
 const ctaLabel = 'Get Recipe';
 
 export default function Post(props: any) {
-  const router = useRouter();
+  /* const router = useRouter();
   if (router.isFallback) {
     return <div>Loading...</div>;
-  }
+  } */
   return (
     <Layout>
       <Head>
