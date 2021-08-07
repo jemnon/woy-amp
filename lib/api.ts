@@ -1,10 +1,17 @@
-export async function fetchGraphQL(query: string): Promise<any> {
+export async function fetchGraphQL(
+  query: string,
+  preview = false,
+): Promise<any> {
   const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`;
 
   const fetchOptions = {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${
+        preview
+          ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+          : process.env.CONTENTFUL_ACCESS_TOKEN
+      }`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query }),
@@ -55,26 +62,41 @@ const POST_GRAPHQL_FIELDS = `
   }
 `;
 
-export async function getPosts(): Promise<any> {
+export async function getAllAmpPosts(preview = false): Promise<any> {
   const query = `{
-    postCollection(where: { enableAmp: true }) {
+    postCollection(where: { enableAmp: true }, preview: ${
+      preview ? 'true' : 'false'
+    }) {
       items {
         ${POST_GRAPHQL_FIELDS}
       }
     }
   }`;
-  const response = await fetchGraphQL(query);
+  const response = await fetchGraphQL(query, preview);
+  console.log(
+    '[fetch graphql all amp posts resp]: ',
+    response?.data?.postCollection?.items,
+  );
   return response?.data?.postCollection?.items;
 }
 
-export async function getPostBySlug(slug?: string): Promise<any> {
+export async function getPostBySlug(
+  slug?: string,
+  preview = false,
+): Promise<any> {
   const query = `{
-    postCollection(where: { slug: "${slug}" }, limit: 1) {
+    postCollection(where: { slug: "${slug}" }, preview: ${
+    preview ? 'true' : 'false'
+  }, limit: 1) {
       items {
         ${POST_GRAPHQL_FIELDS}
       }
     }
   }`;
-  const response = await fetchGraphQL(query);
-  return response?.data?.postCollection?.items;
+  const response = await fetchGraphQL(query, preview);
+  console.log(
+    '[fetch graphql all post by slug resp]: ',
+    response?.data?.postCollection?.items[0],
+  );
+  return response?.data?.postCollection?.items[0];
 }

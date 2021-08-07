@@ -1,25 +1,26 @@
 import { useRouter } from 'next/router';
-// import ErrorPage from 'next/error';
+import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
-import { useAmp } from 'next/amp';
-import Layout from '../components/Layout';
-import { getPosts, getPostBySlug } from '../lib/api';
+import Layout from '../../components/Layout';
+import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
 
-export const config = { amp: 'hybrid' };
+export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
 
-export default function Post(props: any) {
-  const isAmp = useAmp();
+export default function Post({ post }: any) {
   const router = useRouter();
-  console.log('props: ', props);
-  if (router.isFallback) {
-    return <div>Loading...</div>;
+
+  if (!router.isFallback && !post) {
+    return <ErrorPage statusCode={404} />;
   }
+
   return (
     <Layout>
-      {isAmp ? (
+      {router.isFallback ? (
+        <div>Loading...</div>
+      ) : (
         <>
           <Head>
             <script
@@ -37,16 +38,16 @@ export default function Post(props: any) {
           </Head>
           <amp-story
             standalone=""
-            title={`${props.title}`}
+            title={`${post.title}`}
             publisher="Whipser of Yum"
             publisher-logo-src="/logo-white.png"
-            poster-portrait-src={`${props?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
+            poster-portrait-src={`${post?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
           >
             <amp-story-page id="cover">
               <amp-story-grid-layer template="fill">
                 <amp-img
                   alt=""
-                  src={`${props?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
+                  src={`${post?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
                   width="720"
                   height="1280"
                   layout="responsive"
@@ -59,7 +60,7 @@ export default function Post(props: any) {
                       <h1 className="title">whisperofyum.com</h1>
                     </div>
                     <h2 className="headline">
-                      {props?.webStoryCollection?.items[0]?.coverPageTitle}
+                      {post?.webStoryCollection?.items[0]?.coverPageTitle}
                     </h2>
                   </div>
                 </div>
@@ -68,10 +69,10 @@ export default function Post(props: any) {
                 class="cta"
                 layout="nodisplay"
                 cta-text={ctaLabel}
-                href={`https://www.whisperofyum.com/post/${props?.slug}`}
+                href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
-            {props?.webStoryCollection?.items[0]?.storyPagesCollection?.items?.map(
+            {post?.webStoryCollection?.items[0]?.storyPagesCollection?.items?.map(
               (page: any, key: number) => (
                 <amp-story-page id={`page${key + 1}`} key={`page-${key}`}>
                   <amp-story-grid-layer template="fill">
@@ -96,7 +97,7 @@ export default function Post(props: any) {
                     class="cta"
                     layout="nodisplay"
                     cta-text={ctaLabel}
-                    href={`https://www.whisperofyum.com/post/${props?.slug}`}
+                    href={`https://www.whisperofyum.com/post/${post?.slug}`}
                   />
                 </amp-story-page>
               ),
@@ -105,7 +106,7 @@ export default function Post(props: any) {
               <amp-story-grid-layer template="fill">
                 <amp-img
                   alt=""
-                  src={`${props?.webStoryCollection?.items[0]?.lastPageAsset?.url}`}
+                  src={`${post?.webStoryCollection?.items[0]?.lastPageAsset?.url}`}
                   width="720"
                   height="1280"
                   layout="responsive"
@@ -120,7 +121,7 @@ export default function Post(props: any) {
                     <h4 className="headline">
                       <Markdown>
                         {
-                          props?.webStoryCollection?.items[0]
+                          post?.webStoryCollection?.items[0]
                             ?.lastPageDescription
                         }
                       </Markdown>
@@ -132,7 +133,7 @@ export default function Post(props: any) {
                 class="cta"
                 layout="nodisplay"
                 cta-text={ctaLabel}
-                href={`https://www.whisperofyum.com/post/${props?.slug}`}
+                href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
           </amp-story>
@@ -192,36 +193,29 @@ export default function Post(props: any) {
             }
           `}</style>
         </>
-      ) : (
-        <code>{JSON.stringify(props)}</code>
       )}
     </Layout>
   );
 }
 
 export async function getStaticPaths(): Promise<any> {
-  const data = await getPosts();
+  const data = await getAllAmpPosts();
   return {
-    paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
+    paths: data?.map(({ slug }: any) => `/amp/${slug}`) ?? [],
     fallback: true,
   };
 }
 
-export async function getStaticProps({ params }: any): Promise<any> {
-  const [data] = await getPostBySlug(params?.slug);
+export async function getStaticProps({
+  params,
+  preview = false,
+}: any): Promise<any> {
+  const data = await getPostBySlug(params?.slug, preview);
   return {
     props: {
-      ...data,
+      preview,
+      post: data ?? null,
     },
     revalidate: 1,
-  };
-}
-
-export async function getServerSideProp({ params }: any): Promise<any> {
-  const [data] = await getPostBySlug(params?.slug);
-  return {
-    props: {
-      ...data,
-    },
   };
 }

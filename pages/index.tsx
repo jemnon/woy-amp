@@ -1,5 +1,3 @@
-import { getPosts } from '../lib/api';
-
 const Index = (): JSX.Element => <></>;
 
 export default Index;
