@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router';
 // import ErrorPage from 'next/error';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../components/Layout';
 import { getPosts, getPostBySlug } from '../lib/api';
 
-// export const config = { amp: true };
+export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
 
@@ -17,8 +16,7 @@ export default function Post(props: any) {
   }
   return (
     <Layout>
-      {JSON.stringify(props)}
-      {/* <Head>
+      <Head>
         <script
           async
           key="amp-story"
@@ -129,8 +127,8 @@ export default function Post(props: any) {
             href={`https://www.whisperofyum.com/post/${props?.slug}`}
           />
         </amp-story-page>
-      </amp-story> */}
-      {/* <style jsx>{`
+      </amp-story>
+      <style jsx>{`
         amp-story {
           color: #fff;
         }
@@ -184,7 +182,7 @@ export default function Post(props: any) {
           font-size: 1.5rem;
           margin-bottom: 0;
         }
-      `}</style>*/}
+      `}</style>
     </Layout>
   );
 }
@@ -193,7 +191,7 @@ export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
     paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
-    fallback: false,
+    fallback: true,
   };
 }
 
