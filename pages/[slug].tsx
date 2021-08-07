@@ -193,7 +193,7 @@ export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
     paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
-    fallback: true,
+    fallback: false,
   };
 }
 
