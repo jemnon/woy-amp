@@ -16,7 +16,7 @@ interface PostProps {
 
 const ctaLabel = 'Get Recipe';
 
-const Post = (props: any) => {
+export default function Post(props: any) {
   const router = useRouter();
   if (!router.isFallback && !props?.slug) {
     return <ErrorPage statusCode={404} />;
@@ -198,23 +198,21 @@ const Post = (props: any) => {
       `}</style>
     </Layout>
   );
-};
+}
 
-export default Post;
-
-export const getStaticProps = async ({ params }: any): Promise<any> => {
+export async function getStaticProps({ params }: any): Promise<any> {
   const [data] = await getPostBySlug(params?.slug);
   return {
     props: {
       ...data,
     },
   };
-};
+}
 
-export const getStaticPaths = async (): Promise<any> => {
+export async function getStaticPaths(): Promise<any> {
   const data = await getPosts();
   return {
     paths: data?.map(({ slug }: any) => `/${slug}`) ?? [],
     fallback: true,
   };
-};
+}
