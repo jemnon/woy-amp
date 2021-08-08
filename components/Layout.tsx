@@ -66,6 +66,9 @@ export default function Layout({ children }: LayoutProps) {
           line-height: 1.5;
           margin: 0;
         }
+        a {
+          color: #bb5b34;
+        }
       `}</style>
     </>
   );

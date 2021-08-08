@@ -1,3 +1,10 @@
 module.exports = {
-  // experimental: { amp: { skipValidation: true } },
+  async rewrites() {
+    return [
+      {
+        source: '/web-stories',
+        destination: '/',
+      },
+    ];
+  },
 };

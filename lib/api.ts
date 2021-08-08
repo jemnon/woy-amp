@@ -29,6 +29,7 @@ export async function fetchGraphQL(
 
 const POST_GRAPHQL_FIELDS = `
   bodyPreview
+  comments,
   slug
   title
   publishDate
@@ -73,10 +74,10 @@ export async function getAllAmpPosts(preview = false): Promise<any> {
     }
   }`;
   const response = await fetchGraphQL(query, preview);
-  console.log(
+  /* console.log(
     '[fetch graphql all amp posts resp]: ',
     response?.data?.postCollection?.items,
-  );
+  ); */
   return response?.data?.postCollection?.items;
 }
 
@@ -94,9 +95,9 @@ export async function getPostBySlug(
     }
   }`;
   const response = await fetchGraphQL(query, preview);
-  console.log(
+  /* console.log(
     '[fetch graphql all post by slug resp]: ',
     response?.data?.postCollection?.items[0],
-  );
+  ); */
   return response?.data?.postCollection?.items[0];
 }

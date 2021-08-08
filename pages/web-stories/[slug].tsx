@@ -3,11 +3,18 @@ import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../../components/Layout';
+import { siteMeta } from '../../lib/constants';
 import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
+import { getAggregteRating } from '../../lib/aggregate-rating';
 
 export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
+
+const parseIngredientsMD = (content: string): any => {
+  const parseContent = content.split('-').filter(item => item !== '');
+  return parseContent;
+};
 
 export default function Post({ post }: any): JSX.Element {
   const router = useRouter();
@@ -16,6 +23,46 @@ export default function Post({ post }: any): JSX.Element {
     return <ErrorPage statusCode={404} />;
   }
 
+  const aggregateRating = getAggregteRating(post.comments.comments);
+
+  const analyticsJson = {
+    vars: {
+      account: '',
+    },
+    triggers: {
+      'default pageview': {
+        on: 'visible',
+        request: 'pageview',
+        vars: {
+          title: '{{title}}',
+        },
+      },
+    },
+  };
+
+  const schemaJson = {
+    '@context': 'http://schema.org',
+    '@type': 'Recipe',
+    name: post.title,
+    author: {
+      '@type': 'Person',
+      name: siteMeta.AUTHOR,
+    },
+    ...(aggregateRating && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: `${aggregateRating.ratingsAvg}`,
+        reviewCount: `${aggregateRating.ratingsTotal}`,
+      },
+    }),
+    datePublished: post.publishDate,
+    description: post.bodyPreview,
+    image: post?.webStoryCollection?.items[0]?.coverPageAsset?.url,
+    recipeIngredient: parseIngredientsMD(post.ingredients),
+    recipeInstructions: post.instructions,
+    recipeYield: post.servings,
+  };
+
   return (
     <Layout>
       {router.isFallback ? (
@@ -23,6 +70,52 @@ export default function Post({ post }: any): JSX.Element {
       ) : (
         <>
           <Head>
+            <title>{post.title}</title>
+            <link
+              rel="canonical"
+              href={`${siteMeta.COM_URL}/post/${post?.slug}`}
+            />
+            <meta property="og:locale" content="en_US" />
+            <meta name="description" content={post.bodyPreview} />
+            <meta
+              name="url"
+              content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
+            />
+            <meta name="title" content={`${post.title} | ${siteMeta.TITLE}`} />
+            <meta
+              name="image"
+              content={post?.webStoryCollection?.items[0]?.coverPageAsset?.url}
+            />
+            <meta property="og:description" content={post.bodyPreview} />
+            <meta
+              property="og:url"
+              content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
+            />
+            <meta
+              property="og:title"
+              content={`${post.title} | ${siteMeta.TITLE}`}
+            />
+            <meta
+              property="og:image"
+              content={post?.webStoryCollection?.items[0]?.coverPageAsset?.url}
+            />
+            <meta name="twitter:description" content={post.bodyPreview} />
+            <meta
+              name="twitter:url"
+              content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
+            />
+            <meta
+              name="twitter:title"
+              content={`${post.title} | ${siteMeta.TITLE}`}
+            />
+            <meta
+              name="twitter:image"
+              content={post?.webStoryCollection?.items[0]?.coverPageAsset?.url}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
+            />
             <script
               async
               key="amp-story"
@@ -35,18 +128,28 @@ export default function Post({ post }: any): JSX.Element {
               custom-element="amp-video"
               src="https://cdn.ampproject.org/v0/amp-video-0.1.js"
             />
+            <script
+              async
+              key="amp-video"
+              custom-element="amp-analytics"
+              src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
+            />
           </Head>
           <amp-story
             standalone=""
             title={`${post.title}`}
             publisher="Whipser of Yum"
-            publisher-logo-src="/logo-white.png"
+            publisher-logo-src="/logo-black.png"
             poster-portrait-src={`${post?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
           >
-            <amp-story-page id="cover">
+            <amp-story-page id="cover" auto-advance-after="8s">
               <amp-story-grid-layer template="fill">
                 <amp-img
-                  alt=""
+                  alt={post.title}
+                  animate-in="zoom-in"
+                  scale-start="1.1"
+                  scale-end="1.4"
+                  animate-in-duration="10s"
                   src={`${post?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
                   width="720"
                   height="1280"
@@ -69,12 +172,16 @@ export default function Post({ post }: any): JSX.Element {
                 class="cta"
                 layout="nodisplay"
                 cta-text={ctaLabel}
-                href={`https://www.whisperofyum.com/post/${post?.slug}`}
+                href={`https://whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
             {post?.webStoryCollection?.items[0]?.storyPagesCollection?.items?.map(
               (page: any, key: number) => (
-                <amp-story-page id={`page${key + 1}`} key={`page-${key}`}>
+                <amp-story-page
+                  id={`page${key + 1}`}
+                  key={`page-${key}`}
+                  auto-advance-after="8s"
+                >
                   <amp-story-grid-layer template="fill">
                     <amp-img
                       alt=""
@@ -105,7 +212,11 @@ export default function Post({ post }: any): JSX.Element {
             <amp-story-page id="last-page">
               <amp-story-grid-layer template="fill">
                 <amp-img
-                  alt=""
+                  alt={post.title}
+                  animate-in="zoom-in"
+                  scale-start="1.1"
+                  scale-end="1.4"
+                  animate-in-duration="10s"
                   src={`${post?.webStoryCollection?.items[0]?.lastPageAsset?.url}`}
                   width="720"
                   height="1280"
@@ -136,6 +247,14 @@ export default function Post({ post }: any): JSX.Element {
                 href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
+            <amp-analytics type="googleanalytics">
+              <script
+                type="application/json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify(analyticsJson),
+                }}
+              />
+            </amp-analytics>
           </amp-story>
           <style jsx>{`
             amp-story {
@@ -201,7 +320,7 @@ export default function Post({ post }: any): JSX.Element {
 export async function getStaticPaths(): Promise<any> {
   const data = await getAllAmpPosts();
   return {
-    paths: data?.map(({ slug }: any) => `/amp/${slug}`) ?? [],
+    paths: data?.map(({ slug }: any) => `/web-stories/${slug}`) ?? [],
     fallback: true,
   };
 }

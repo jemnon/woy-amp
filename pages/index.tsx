@@ -1,30 +1,43 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Layout from '../components/Layout';
+import { getAllAmpPosts } from '../lib/api';
 
-const Index = (): JSX.Element => (
-  <Layout>
-    <Head>
-      <meta name="robots" content="noindex" />
-    </Head>
-  </Layout>
-);
+const Index = ({ posts }: any): JSX.Element => {
+  const router = useRouter();
+
+  if (!router.isFallback && !posts) {
+    return <ErrorPage statusCode={404} />;
+  }
+  return (
+    <Layout>
+      <Head>
+        <meta name="robots" content="noindex" />
+        {router.isFallback ? (
+          <div>Loading...</div>
+        ) : (
+          <ul>
+            {posts.map((post: any, key: number) => (
+              <li key={`post-${key}`}>
+                <Link href={`/web-stories/${post.slug}`}>{post.title}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Head>
+    </Layout>
+  );
+};
 
 export default Index;
 
-/* interface StaticProps {
-  redirect: {
-    destination: string;
-    permanent: boolean;
-  };
-}
-
-export const getStaticProps = async (): Promise<StaticProps> => {
-  const data = await getPosts();
-  const slug = data[0]?.slug;
+export async function getStaticProps() {
+  const data = await getAllAmpPosts();
   return {
-    redirect: {
-      destination: `/${slug}`,
-      permanent: false,
+    props: {
+      posts: data ?? null,
     },
   };
-}; */
+}
