@@ -9,7 +9,7 @@ export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
 
-export default function Post({ post }: any) {
+export default function Post({ post }: any): JSX.Element {
   const router = useRouter();
 
   if (!router.isFallback && !post) {

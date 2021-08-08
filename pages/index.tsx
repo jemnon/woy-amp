@@ -1,4 +1,13 @@
-const Index = (): JSX.Element => <></>;
+import Head from 'next/head';
+import Layout from '../components/Layout';
+
+const Index = (): JSX.Element => (
+  <Layout>
+    <Head>
+      <meta name="robots" content="noindex" />
+    </Head>
+  </Layout>
+);
 
 export default Index;
 
