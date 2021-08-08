@@ -11,8 +11,8 @@ export const config = { amp: true };
 
 const ctaLabel = 'Get Recipe';
 
-const parseIngredientsMD = (content: string): any => {
-  const parseContent = content.split('-').filter(item => item !== '');
+const parseIngredientsMD = (content?: string): any => {
+  const parseContent = content?.split('-').filter(item => item !== '');
   return parseContent;
 };
 
@@ -23,7 +23,7 @@ export default function Post({ post }: any): JSX.Element {
     return <ErrorPage statusCode={404} />;
   }
 
-  const aggregateRating = getAggregteRating(post.comments.comments);
+  const aggregateRating = getAggregteRating(post?.comments?.comments);
 
   const analyticsJson = {
     vars: {
@@ -47,7 +47,7 @@ export default function Post({ post }: any): JSX.Element {
   const schemaJson = {
     '@context': 'http://schema.org',
     '@type': 'Recipe',
-    name: post.title,
+    name: post?.title,
     author: {
       '@type': 'Person',
       name: siteMeta.AUTHOR,
@@ -55,16 +55,18 @@ export default function Post({ post }: any): JSX.Element {
     ...(aggregateRating && {
       aggregateRating: {
         '@type': 'AggregateRating',
-        ratingValue: `${aggregateRating.ratingsAvg}`,
-        reviewCount: `${aggregateRating.ratingsTotal}`,
+        ratingValue: `${aggregateRating?.ratingsAvg}`,
+        reviewCount: `${aggregateRating?.ratingsTotal}`,
       },
     }),
-    datePublished: post.publishDate,
-    description: post.bodyPreview,
+    datePublished: post?.publishDate,
+    description: post?.bodyPreview,
     image: post?.webStoryCollection?.items[0]?.coverPageAsset?.url,
-    recipeIngredient: parseIngredientsMD(post.ingredients),
-    recipeInstructions: post.instructions,
-    recipeYield: post.servings,
+    ...(post?.ingredients && {
+      recipeIngredient: parseIngredientsMD(post?.ingredients),
+    }),
+    recipeInstructions: post?.instructions,
+    recipeYield: post?.servings,
   };
 
   return (
@@ -74,43 +76,43 @@ export default function Post({ post }: any): JSX.Element {
       ) : (
         <>
           <Head>
-            <title>{post.title}</title>
+            <title>{post?.title}</title>
             <link
               rel="canonical"
               href={`${siteMeta.COM_URL}/post/${post?.slug}`}
             />
             <meta property="og:locale" content="en_US" />
-            <meta name="description" content={post.bodyPreview} />
+            <meta name="description" content={post?.bodyPreview} />
             <meta
               name="url"
               content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
             />
-            <meta name="title" content={`${post.title} | ${siteMeta.TITLE}`} />
+            <meta name="title" content={`${post?.title} | ${siteMeta.TITLE}`} />
             <meta
               name="image"
               content={post?.webStoryCollection?.items[0]?.coverPageAsset?.url}
             />
-            <meta property="og:description" content={post.bodyPreview} />
+            <meta property="og:description" content={post?.bodyPreview} />
             <meta
               property="og:url"
               content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
             />
             <meta
               property="og:title"
-              content={`${post.title} | ${siteMeta.TITLE}`}
+              content={`${post?.title} | ${siteMeta.TITLE}`}
             />
             <meta
               property="og:image"
               content={post?.webStoryCollection?.items[0]?.coverPageAsset?.url}
             />
-            <meta name="twitter:description" content={post.bodyPreview} />
+            <meta name="twitter:description" content={post?.bodyPreview} />
             <meta
               name="twitter:url"
               content={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
             />
             <meta
               name="twitter:title"
-              content={`${post.title} | ${siteMeta.TITLE}`}
+              content={`${post?.title} | ${siteMeta.TITLE}`}
             />
             <meta
               name="twitter:image"
@@ -141,7 +143,7 @@ export default function Post({ post }: any): JSX.Element {
           </Head>
           <amp-story
             standalone=""
-            title={`${post.title}`}
+            title={`${post?.title}`}
             publisher="Whipser of Yum"
             publisher-logo-src="/logo-black.png"
             poster-portrait-src={`${post?.webStoryCollection?.items[0]?.coverPageAsset?.url}`}
@@ -149,7 +151,7 @@ export default function Post({ post }: any): JSX.Element {
             <amp-story-page id="cover" auto-advance-after="8s">
               <amp-story-grid-layer template="fill">
                 <amp-img
-                  alt={post.title}
+                  alt={post?.title}
                   animate-in="zoom-in"
                   scale-start="1.1"
                   scale-end="1.4"
@@ -216,7 +218,7 @@ export default function Post({ post }: any): JSX.Element {
             <amp-story-page id="last-page">
               <amp-story-grid-layer template="fill">
                 <amp-img
-                  alt={post.title}
+                  alt={post?.title}
                   animate-in="zoom-in"
                   scale-start="1.1"
                   scale-end="1.4"
