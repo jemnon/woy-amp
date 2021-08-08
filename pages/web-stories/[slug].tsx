@@ -27,14 +27,18 @@ export default function Post({ post }: any): JSX.Element {
 
   const analyticsJson = {
     vars: {
-      account: '',
-    },
-    triggers: {
-      'default pageview': {
-        on: 'visible',
-        request: 'pageview',
-        vars: {
-          title: '{{title}}',
+      gtag_id: 'G-9KJ41VK24X',
+      config: {
+        'G-9KJ41VK24X': { groups: 'default' },
+      },
+      linker: { domains: ['www.whisperofyum.app'] },
+      triggers: {
+        'default pageview': {
+          on: 'visible',
+          request: 'pageview',
+          vars: {
+            title: '{{title}}',
+          },
         },
       },
     },
@@ -247,7 +251,7 @@ export default function Post({ post }: any): JSX.Element {
                 href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
-            <amp-analytics type="googleanalytics">
+            <amp-analytics type="googleanalytics" data-credentials="include">
               <script
                 type="application/json"
                 dangerouslySetInnerHTML={{
