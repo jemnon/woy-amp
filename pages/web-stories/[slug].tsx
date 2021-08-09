@@ -7,7 +7,7 @@ import AmpAnalytics from '../../components/amp/AmpAnalytics';
 import { siteMeta } from '../../lib/constants';
 import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
 import { getAggregteRating } from '../../lib/aggregate-rating';
-import { GA_TRACKING_ID } from '../../lib/gtag';
+import { GA_TRACKING_ID, GTAG_TRACKING_ID } from '../../lib/gtag';
 
 export const config = { amp: true };
 
@@ -241,7 +241,7 @@ export default function Post({ post }: any): JSX.Element {
               script={{
                 vars: {
                   account: GA_TRACKING_ID,
-                  gtag_id: GA_TRACKING_ID,
+                  gtag_id: GTAG_TRACKING_ID,
                   config: {
                     [GA_TRACKING_ID as string]: { groups: 'default' },
                   },
