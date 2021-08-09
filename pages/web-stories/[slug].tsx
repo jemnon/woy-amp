@@ -3,9 +3,11 @@ import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../../components/Layout';
+import AmpAnalytics from '../../components/amp/AmpAnalytics';
 import { siteMeta } from '../../lib/constants';
 import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
 import { getAggregteRating } from '../../lib/aggregate-rating';
+import { GA_TRACKING_ID } from '../../lib/gtag';
 
 export const config = { amp: true };
 
@@ -24,25 +26,6 @@ export default function Post({ post }: any): JSX.Element {
   }
 
   const aggregateRating = getAggregteRating(post?.comments?.comments);
-
-  const analyticsJson = {
-    vars: {
-      gtag_id: 'G-9KJ41VK24X',
-      config: {
-        'G-9KJ41VK24X': { groups: 'default' },
-      },
-      linker: { domains: ['www.whisperofyum.app'] },
-      triggers: {
-        'default pageview': {
-          on: 'visible',
-          request: 'pageview',
-          vars: {
-            title: '{{title}}',
-          },
-        },
-      },
-    },
-  };
 
   const schemaJson = {
     '@context': 'http://schema.org',
@@ -253,14 +236,24 @@ export default function Post({ post }: any): JSX.Element {
                 href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
-            <amp-analytics type="googleanalytics" data-credentials="include">
-              <script
-                type="application/json"
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify(analyticsJson),
-                }}
-              />
-            </amp-analytics>
+            <AmpAnalytics
+              type="googleanalytics"
+              script={{
+                vars: {
+                  account: GA_TRACKING_ID,
+                  gtag_id: GA_TRACKING_ID,
+                  config: {
+                    [GA_TRACKING_ID as string]: { groups: 'default' },
+                  },
+                },
+                triggers: {
+                  trackPageview: {
+                    on: 'visible',
+                    request: 'pageview',
+                  },
+                },
+              }}
+            />
           </amp-story>
           <style jsx>{`
             amp-story {
