@@ -62,7 +62,7 @@ export default function Post({ post }: any): JSX.Element {
             <title>{post?.title}</title>
             <link
               rel="canonical"
-              href={`${siteMeta.COM_URL}/post/${post?.slug}`}
+              href={`${siteMeta.APP_URL}/web-stories/${post?.slug}`}
             />
             <meta property="og:locale" content="en_US" />
             <meta name="description" content={post?.bodyPreview} />
