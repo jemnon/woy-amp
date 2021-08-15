@@ -243,13 +243,99 @@ export default function Post({ post }: any): JSX.Element {
                   account: GA_TRACKING_ID,
                   gtag_id: GTAG_TRACKING_ID,
                   config: {
-                    [GTAG_TRACKING_ID as string]: { groups: 'default' },
+                    [GTAG_TRACKING_ID as string]: {
+                      groups: 'default',
+                      linker: {
+                        domains: ['whisperofyum.app'],
+                      },
+                    },
                   },
                 },
                 triggers: {
-                  trackPageview: {
-                    on: 'visible',
-                    request: 'pageview',
+                  storyProgress: {
+                    on: 'story-page-visible',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_progress',
+                      event_category: '${title}',
+                      event_label: '${storyPageIndex}',
+                      event_value: '${storyProgress}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  storyEnd: {
+                    on: 'story-last-page-visible',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_complete',
+                      event_category: '${title}',
+                      event_label: '${storyPageCount}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  trackFocusState: {
+                    on: 'story-focus',
+                    tagName: 'a',
+                    request: 'click ',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_focus',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  trackClickThrough: {
+                    on: 'story-click-through',
+                    tagName: 'a',
+                    request: 'click ',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_click_through',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  storyOpen: {
+                    on: 'story-open',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_open',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  storyClose: {
+                    on: 'story-close',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_close',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  pageAttachmentEnter: {
+                    on: 'story-page-attachment-enter',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_page_attachment_enter',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
+                  },
+                  pageAttachmentExit: {
+                    on: 'story-page-attachment-exit',
+                    request: 'event',
+                    vars: {
+                      event_name: 'custom',
+                      event_action: 'story_page_attachment_exit',
+                      event_category: '${title}',
+                      send_to: GTAG_TRACKING_ID,
+                    },
                   },
                 },
               }}
