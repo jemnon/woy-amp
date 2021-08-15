@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { useAmp } from 'next/amp';
 
-import { GA_TRACKING_ID } from '../lib/gtag';
+import { GTAG_TRACKING_ID } from '../lib/gtag';
 
 function AmpWrap({ ampOnly, nonAmp }: any) {
   const isAmp = useAmp();
@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
               <>
                 <script
                   async
-                  src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+                  src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_TRACKING_ID}`}
                 />
                 <script
                   dangerouslySetInnerHTML={{
@@ -41,7 +41,7 @@ export default class MyDocument extends Document {
                       window.dataLayer = window.dataLayer || [];
                       function gtag(){dataLayer.push(arguments);}
                       gtag('js', new Date());
-                      gtag('config', '${GA_TRACKING_ID}');
+                      gtag('config', '${GTAG_TRACKING_ID}');
                     `,
                   }}
                 />

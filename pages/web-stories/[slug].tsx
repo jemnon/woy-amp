@@ -243,7 +243,7 @@ export default function Post({ post }: any): JSX.Element {
                   account: GA_TRACKING_ID,
                   gtag_id: GTAG_TRACKING_ID,
                   config: {
-                    [GA_TRACKING_ID as string]: { groups: 'default' },
+                    [GTAG_TRACKING_ID as string]: { groups: 'default' },
                   },
                 },
                 triggers: {
