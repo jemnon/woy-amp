@@ -1,7 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { useAmp } from 'next/amp';
+import AmpAnalytics from '../components/amp/AmpAnalytics';
 
-import { GA_TRACKING_ID } from '../lib/gtag';
+import { GA_TRACKING_ID, GTAG_TRACKING_ID } from '../lib/gtag';
 
 function AmpWrap({ ampOnly, nonAmp }: any) {
   const isAmp = useAmp();
@@ -27,13 +28,37 @@ export default class MyDocument extends Document {
           <Main />
           <NextScript />
 
+          {/* AMP - Google Analytics */}
+          <AmpWrap
+            ampOnly={
+              <AmpAnalytics
+                type="googleanalytics"
+                script={{
+                  vars: {
+                    account: GA_TRACKING_ID,
+                    gtag_id: GTAG_TRACKING_ID,
+                    config: {
+                      [GTAG_TRACKING_ID as string]: { groups: 'default' },
+                    },
+                  },
+                  triggers: {
+                    trackPageview: {
+                      on: 'visible',
+                      request: 'pageview',
+                    },
+                  },
+                }}
+              />
+            }
+          />
+
           {/* Non-AMP - Google Analytics */}
           <AmpWrap
             nonAmp={
               <>
                 <script
                   async
-                  src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+                  src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_TRACKING_ID}`}
                 />
                 <script
                   dangerouslySetInnerHTML={{
@@ -41,7 +66,7 @@ export default class MyDocument extends Document {
                       window.dataLayer = window.dataLayer || [];
                       function gtag(){dataLayer.push(arguments);}
                       gtag('js', new Date());
-                      gtag('config', '${GA_TRACKING_ID}');
+                      gtag('config', '${GTAG_TRACKING_ID}');
                     `,
                   }}
                 />

@@ -3,11 +3,9 @@ import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Markdown from 'react-markdown';
 import Layout from '../../components/Layout';
-import AmpAnalytics from '../../components/amp/AmpAnalytics';
 import { siteMeta } from '../../lib/constants';
 import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
 import { getAggregteRating } from '../../lib/aggregate-rating';
-import { GA_TRACKING_ID, GTAG_TRACKING_ID } from '../../lib/gtag';
 
 export const config = { amp: true };
 
@@ -236,24 +234,6 @@ export default function Post({ post }: any): JSX.Element {
                 href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
-            <AmpAnalytics
-              type="googleanalytics"
-              script={{
-                vars: {
-                  account: GA_TRACKING_ID,
-                  gtag_id: GTAG_TRACKING_ID,
-                  config: {
-                    [GA_TRACKING_ID as string]: { groups: 'default' },
-                  },
-                },
-                triggers: {
-                  trackPageview: {
-                    on: 'visible',
-                    request: 'pageview',
-                  },
-                },
-              }}
-            />
           </amp-story>
           <style jsx>{`
             amp-story {
