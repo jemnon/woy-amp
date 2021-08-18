@@ -18,6 +18,9 @@ export default function Layout({ children }: LayoutProps) {
             Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
             Helvetica Neue, sans-serif;
         }
+        body {
+          font-size: 1.5rem;
+        }
         h1,
         h2,
         h3,
@@ -56,6 +59,7 @@ export default function Layout({ children }: LayoutProps) {
         .markdown,
         .markdown p {
           text-align: center;
+          font-size: 1.5rem;
         }
         .markdown ul {
           padding-left: 0;
@@ -63,6 +67,7 @@ export default function Layout({ children }: LayoutProps) {
         }
         p {
           font-weight: normal;
+          font-size: 1.5rem;
           line-height: 1.5;
           margin: 0;
         }
