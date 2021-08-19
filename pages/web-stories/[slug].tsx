@@ -11,7 +11,7 @@ import { GA_TRACKING_ID, GTAG_TRACKING_ID } from '../../lib/gtag';
 
 export const config = { amp: true };
 
-const ctaLabel = 'Get Recipe';
+const ctaLabel = 'Learn More';
 
 const parseIngredientsMD = (content?: string): any => {
   const parseContent = content?.split('-').filter(item => item !== '');
@@ -232,7 +232,7 @@ export default function Post({ post }: any): JSX.Element {
               <amp-story-page-attachment
                 class="cta"
                 layout="nodisplay"
-                cta-text={ctaLabel}
+                cta-text="Get Recipe"
                 href={`https://www.whisperofyum.com/post/${post?.slug}`}
               />
             </amp-story-page>
