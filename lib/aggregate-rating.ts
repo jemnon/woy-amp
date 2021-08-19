@@ -6,11 +6,11 @@ interface RatingsReturnType {
 export const getAggregteRating = (
   comments?: any[],
 ): RatingsReturnType | null => {
-  if (!comments) return null;
+  if (!comments || comments?.length === 0) return null;
   const mappedComments = comments
     .filter(comment => comment.rating && comment.rating !== 0)
     .map(comment => comment.rating);
-  const sum = mappedComments.reduce((acc, val) => {
+  const sum = mappedComments?.reduce((acc, val) => {
     if (acc && val) return acc + val;
   });
   const ratingsTotal = mappedComments.length;
