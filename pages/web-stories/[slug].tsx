@@ -174,7 +174,7 @@ export default function Post({ post }: any): JSX.Element {
                   <amp-story-grid-layer template="fill">
                     <amp-img
                       alt=""
-                      src={`${page.asset.url}`}
+                      src={`${page?.asset?.url}`}
                       width="720"
                       height="1280"
                       layout="responsive"
