@@ -235,13 +235,9 @@ export default function Post({ post }: any): JSX.Element {
               script={{
                 vars: {
                   account: GA_TRACKING_ID,
-                  gtag_id: GTAG_TRACKING_ID,
                   config: {
-                    [GTAG_TRACKING_ID as string]: {
+                    [GA_TRACKING_ID as string]: {
                       groups: 'default',
-                      linker: {
-                        domains: ['whisperofyum.app'],
-                      },
                     },
                   },
                 },
@@ -259,7 +255,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_category: '${title}',
                       event_label: '${storyPageIndex}',
                       event_value: '${storyProgress}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   storyEnd: {
@@ -270,7 +265,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_action: 'story_complete',
                       event_category: '${title}',
                       event_label: '${storyPageCount}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   trackFocusState: {
@@ -281,7 +275,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_focus',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   trackClickThrough: {
@@ -292,7 +285,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_click_through',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   storyOpen: {
@@ -302,7 +294,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_open',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   storyClose: {
@@ -312,7 +303,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_close',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   pageAttachmentEnter: {
@@ -322,7 +312,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_page_attachment_enter',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                   pageAttachmentExit: {
@@ -332,7 +321,6 @@ export default function Post({ post }: any): JSX.Element {
                       event_name: 'custom',
                       event_action: 'story_page_attachment_exit',
                       event_category: '${title}',
-                      send_to: GTAG_TRACKING_ID,
                     },
                   },
                 },
