@@ -21,3 +21,8 @@ export const getAggregteRating = (
     ratingsTotal,
   };
 };
+
+export const parseIngredientsMD = (content?: string): any => {
+  const parseContent = content?.split('-').filter(item => item !== '');
+  return parseContent;
+};

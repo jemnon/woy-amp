@@ -74,11 +74,21 @@ export async function getAllAmpPosts(preview = false): Promise<any> {
     }
   }`;
   const response = await fetchGraphQL(query, preview);
-  /* console.log(
-    '[fetch graphql all amp posts resp]: ',
-    response?.data?.postCollection?.items,
-  ); */
   return response?.data?.postCollection?.items;
+}
+
+export async function getLatestAmpPost(preview = false): Promise<any> {
+  const query = `{
+    postCollection(where: { enableAmp: true }, preview: ${
+      preview ? 'true' : 'false'
+    }, limit: 1, order:publishDate_DESC) {
+      items {
+        ${POST_GRAPHQL_FIELDS}
+      }
+    }
+  }`;
+  const response = await fetchGraphQL(query, preview);
+  return response?.data?.postCollection?.items[0];
 }
 
 export async function getPostBySlug(
@@ -95,9 +105,5 @@ export async function getPostBySlug(
     }
   }`;
   const response = await fetchGraphQL(query, preview);
-  /* console.log(
-    '[fetch graphql all post by slug resp]: ',
-    response?.data?.postCollection?.items[0],
-  ); */
   return response?.data?.postCollection?.items[0];
 }
