@@ -6,17 +6,11 @@ import Layout from '../../components/Layout';
 import AmpAnalytics from '../../components/amp/AmpAnalytics';
 import { siteMeta } from '../../lib/constants';
 import { getAllAmpPosts, getPostBySlug } from '../../lib/api';
-import { getAggregteRating } from '../../lib/aggregate-rating';
+import { getAggregteRating, parseIngredientsMD } from '../../lib/meta-data';
 import { GA_TRACKING_ID, GTAG_TRACKING_ID } from '../../lib/gtag';
 
 export const config = { amp: true };
-
 const ctaLabel = 'Learn More';
-
-const parseIngredientsMD = (content?: string): any => {
-  const parseContent = content?.split('-').filter(item => item !== '');
-  return parseContent;
-};
 
 export default function Post({ post }: any): JSX.Element {
   const router = useRouter();
@@ -252,6 +246,10 @@ export default function Post({ post }: any): JSX.Element {
                   },
                 },
                 triggers: {
+                  trackPageview: {
+                    on: 'visible',
+                    request: 'pageview',
+                  },
                   storyProgress: {
                     on: 'story-page-visible',
                     request: 'event',

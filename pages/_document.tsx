@@ -14,13 +14,13 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;700&display=swap"
-            rel="stylesheet"
-          />
           <meta
             name="google-site-verification"
             content="91DNH8D3DcbnVKZTTmRsEWrDG9c2Dn4CUuFgwNYNCVY"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;700&display=swap"
+            rel="stylesheet"
           />
         </Head>
         <body>
