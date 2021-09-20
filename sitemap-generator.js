@@ -19,7 +19,7 @@ getDynamicPaths().then(paths => {
   const Sitemap = configureSitemap({
     domains: [{ domain: 'www.whisperofyum.app', defaultLocale: 'en' }],
     include: paths,
-    exclude: ['/web-stories/*'],
+    exclude: ['/web-stories/*', '/api', '/api/*'],
     excludeIndex: true,
     pagesConfig: {
       '/web-stories/*': {
@@ -27,7 +27,7 @@ getDynamicPaths().then(paths => {
         changefreq: 'daily',
       },
     },
-    trailingSlash: true,
+    trailingSlash: false,
     targetDirectory: __dirname + '/public',
     pagesDirectory: __dirname + '/pages',
   });

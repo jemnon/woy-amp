@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow:/
+Disallow: /api/
+Sitemap: https://www.whisperofyum.app/sitemap.xml
+Host: https://www.whisperofyum.app
